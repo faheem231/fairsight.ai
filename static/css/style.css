@@ -744,7 +744,7 @@ select option { background: var(--bg); color: var(--white); }
 }
 
 .eb-hero__headline {
-  font-size: 3.5rem;
+  font-size: 2.8rem;
   font-weight: 700;
   line-height: 1.08;
   color: #ffffff;
@@ -758,6 +758,92 @@ select option { background: var(--bg); color: var(--white); }
   color: rgba(255,255,255,0.5);
   max-width: 480px;
   margin-bottom: 32px;
+}
+
+/* ═══ FLOATING CARDS ═══ */
+.eb-hero__floating-cards {
+  position: absolute;
+  top: 15%;
+  right: 12%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 280px;
+  height: 380px;
+  pointer-events: none;
+}
+
+.floating-card {
+  position: absolute;
+  background: rgba(18, 16, 28, 0.7);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  animation: floatCardRight 6s ease-in-out infinite;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
+  width: max-content;
+  min-width: 220px;
+}
+
+.floating-card.fc-1 {
+  top: 0;
+  right: 40px;
+  animation-delay: 0s;
+}
+
+.floating-card.fc-2 {
+  top: 110px;
+  right: -20px;
+  animation-delay: -2s;
+}
+
+.floating-card.fc-3 {
+  top: 220px;
+  right: 60px;
+  animation-delay: -4s;
+}
+
+.fc-icon {
+  font-size: 24px;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fc-title {
+  font-size: 13px;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 4px;
+}
+
+.fc-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+}
+
+@keyframes floatCard {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+@keyframes floatCardRight {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(15px); }
+}
+
+@media (max-width: 1024px) {
+  .eb-hero__floating-cards {
+    display: none;
+  }
 }
 
 /* ═══ PANEL ═══ */
@@ -939,7 +1025,9 @@ select option { background: var(--bg); color: var(--white); }
     padding: 100px 24px 40px;
     max-width: 100%;
   }
-  .eb-hero__headline { font-size: 2.2rem; }
+  .eb-hero__headline {
+    font-size: 2.2rem;
+  }
   .eb-panel { width: 94%; height: auto; min-height: 160px; }
   .eb-panel__content { grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 20px 16px; }
   .eb-stat { padding: 6px 10px; border-right: none; }

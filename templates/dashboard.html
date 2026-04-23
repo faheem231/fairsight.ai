@@ -33,15 +33,20 @@
 
   <!-- ── HERO TEXT (z-index: 10) ── -->
   <div class="eb-hero__text">
+
     <div class="pill fade-up" style="margin-bottom:20px;">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+      </svg>
       <span class="shiny-text">⚡ AI-powered bias detection for modern teams</span>
     </div>
     <h1 class="eb-hero__headline hero-title fade-up">
-      Detect bias before<br>it causes harm
+      Stop algorithmic bias<br>
+      <span style="font-size: 0.9em; color: rgba(255,255,255,0.8);">before it starts</span>
     </h1>
     <p class="eb-hero__sub fade-up">
-      Upload any CSV dataset, select sensitive attributes, and get an instant fairness audit powered by AI. No code required.
+      Upload any CSV dataset, select sensitive attributes, and get an instant fairness audit powered by AI. No code
+      required.
     </p>
     {% if analysis %}
     <a href="{{ url_for('report.report_page') }}" class="btn-primary magnetic fade-up">View Analysis Report</a>
@@ -49,6 +54,31 @@
     <a href="{{ url_for('upload.upload_page') }}" class="btn-primary magnetic fade-up">Start Free Audit</a>
     {% endif %}
   </div>
+  <!-- ── FLOATING CARDS (RIGHT SIDE) ── -->
+  <div class="eb-hero__floating-cards">
+    <div class="floating-card fc-1 glass-card">
+      <div class="fc-icon">🛡️</div>
+      <div>
+        <div class="fc-title">Fairness Insured</div>
+        <div class="fc-value">100%</div>
+      </div>
+    </div>
+    <div class="floating-card fc-2 glass-card">
+      <div class="fc-icon">📊</div>
+      <div>
+        <div class="fc-title">Bias Detected</div>
+        <div class="fc-value">0 Disparities</div>
+      </div>
+    </div>
+    <div class="floating-card fc-3 glass-card">
+      <div class="fc-icon">✨</div>
+      <div>
+        <div class="fc-title">AI Audit</div>
+        <div class="fc-value">Passed</div>
+      </div>
+    </div>
+  </div>
+
 
   <!-- ── PANEL — connected to beam ── -->
   <div class="eb-panel" id="eb-panel">
@@ -63,22 +93,30 @@
       <div class="eb-stat stat-card">
         <div class="eb-stat__value stat-number">97.4</div>
         <div class="eb-stat__label">Model Accuracy (%)</div>
-        <div class="eb-stat__bar"><div class="eb-stat__fill" style="--fw:97.4%"></div></div>
+        <div class="eb-stat__bar">
+          <div class="eb-stat__fill" style="--fw:97.4%"></div>
+        </div>
       </div>
       <div class="eb-stat stat-card">
         <div class="eb-stat__value stat-number">23</div>
         <div class="eb-stat__label">Bias Score</div>
-        <div class="eb-stat__bar"><div class="eb-stat__fill" style="--fw:23%"></div></div>
+        <div class="eb-stat__bar">
+          <div class="eb-stat__fill" style="--fw:23%"></div>
+        </div>
       </div>
       <div class="eb-stat stat-card">
         <div class="eb-stat__value stat-number">1247</div>
         <div class="eb-stat__label">Datasets Audited</div>
-        <div class="eb-stat__bar"><div class="eb-stat__fill" style="--fw:82%"></div></div>
+        <div class="eb-stat__bar">
+          <div class="eb-stat__fill" style="--fw:82%"></div>
+        </div>
       </div>
       <div class="eb-stat stat-card">
         <div class="eb-stat__value stat-number">91</div>
         <div class="eb-stat__label">Fairness Index</div>
-        <div class="eb-stat__bar"><div class="eb-stat__fill" style="--fw:91%"></div></div>
+        <div class="eb-stat__bar">
+          <div class="eb-stat__fill" style="--fw:91%"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -95,7 +133,8 @@
     <div class="card fade-up" style="display:flex;gap:40px;align-items:center;padding:40px;">
       <div class="gauge-container" style="position:relative;width:200px;height:200px;flex-shrink:0;">
         <canvas id="hero-fairness-gauge"></canvas>
-        <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+        <div
+          style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;">
           <span class="stat-number">{{ analysis.fairness_score }}</span>
           <span class="label-tag">Fairness</span>
         </div>
@@ -116,8 +155,10 @@
 <!-- Logo Strip -->
 <section class="logo-strip">
   <div class="logo-track">
-    <span>Google</span><span>Microsoft</span><span>OpenAI</span><span>Meta</span><span>Anthropic</span><span>IBM</span><span>AWS</span><span>Hugging Face</span>
-    <span>Google</span><span>Microsoft</span><span>OpenAI</span><span>Meta</span><span>Anthropic</span><span>IBM</span><span>AWS</span><span>Hugging Face</span>
+    <span>Google</span><span>Microsoft</span><span>OpenAI</span><span>Meta</span><span>Anthropic</span><span>IBM</span><span>AWS</span><span>Hugging
+      Face</span>
+    <span>Google</span><span>Microsoft</span><span>OpenAI</span><span>Meta</span><span>Anthropic</span><span>IBM</span><span>AWS</span><span>Hugging
+      Face</span>
   </div>
 </section>
 
@@ -131,29 +172,46 @@
     </div>
     <div class="grid-3">
       <div class="card fade-up">
-        <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg></div>
+        <div class="card-icon"><svg viewBox="0 0 24 24">
+            <path d="M18 20V10M12 20V4M6 20v-6" />
+          </svg></div>
         <div class="card-title">Instant Metrics</div>
-        <div class="card-desc">Compute demographic parity and disparate impact in seconds with automated statistical analysis.</div>
+        <div class="card-desc">Compute demographic parity and disparate impact in seconds with automated statistical
+          analysis.</div>
       </div>
       <div class="card fade-up">
-        <div class="card-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></div>
+        <div class="card-icon"><svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 16v-4M12 8h.01" />
+          </svg></div>
         <div class="card-title">Visual Reports</div>
-        <div class="card-desc">Interactive Chart.js visualizations with dark theme, gauges, and real-time data rendering.</div>
+        <div class="card-desc">Interactive Chart.js visualizations with dark theme, gauges, and real-time data
+          rendering.</div>
       </div>
       <div class="card fade-up">
-        <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg></div>
+        <div class="card-icon"><svg viewBox="0 0 24 24">
+            <path
+              d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+          </svg></div>
         <div class="card-title">AI Fix Engine</div>
-        <div class="card-desc">Gemini AI generates concrete, actionable remediation steps tailored to your specific data.</div>
+        <div class="card-desc">Gemini AI generates concrete, actionable remediation steps tailored to your specific
+          data.</div>
       </div>
       <div class="card fade-up">
-        <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+        <div class="card-icon"><svg viewBox="0 0 24 24">
+            <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+          </svg></div>
         <div class="card-title">AI Chat Assistant</div>
-        <div class="card-desc">Ask Gemini questions about your bias report in natural language and get clear explanations.</div>
+        <div class="card-desc">Ask Gemini questions about your bias report in natural language and get clear
+          explanations.</div>
       </div>
       <div class="card fade-up">
-        <div class="card-icon"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+        <div class="card-icon"><svg viewBox="0 0 24 24">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+          </svg></div>
         <div class="card-title">Score Timeline</div>
-        <div class="card-desc">Track fairness score history over time and monitor improvements across multiple audits.</div>
+        <div class="card-desc">Track fairness score history over time and monitor improvements across multiple audits.
+        </div>
       </div>
     </div>
   </div>
@@ -233,312 +291,384 @@
       </p>
     </div>
 
-<style>
-/* ── Wrapper ── */
-.solar-system-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 60px 20px;
-  position: relative;
-}
+    <style>
+      /* ── Wrapper ── */
+      .solar-system-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 60px 20px;
+        position: relative;
+      }
 
-/* ── Stage ── */
-.solar-system {
-  position: relative;
-  width: 520px;
-  height: 520px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+      /* ── Stage ── */
+      .solar-system {
+        position: relative;
+        width: 520px;
+        height: 520px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
 
-/* ── SUN ── */
-.sun {
-  position: absolute;
-  width: 88px;
-  height: 88px;
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+      /* ── SUN ── */
+      .sun {
+        position: absolute;
+        width: 88px;
+        height: 88px;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
 
-.sun-core {
-  width: 88px;
-  height: 88px;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle at 35% 35%,
-    #a78bfa,
-    #7c3aed 50%,
-    #4c1d95
-  );
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Sora', sans-serif;
-  font-size: 1.6rem;
-  font-weight: 800;
-  color: #fff;
-  letter-spacing: -1px;
-  box-shadow:
-    0 0 0 4px rgba(124,58,237,0.3),
-    0 0 30px rgba(124,58,237,0.8),
-    0 0 60px rgba(124,58,237,0.4),
-    0 0 100px rgba(124,58,237,0.2);
-  z-index: 2;
-  position: relative;
-  animation: sunRotate 20s linear infinite;
-  cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.sun-core:hover {
-  transform: scale(1.12);
-  box-shadow:
-    0 0 0 6px rgba(124,58,237,0.4),
-    0 0 50px rgba(124,58,237,1),
-    0 0 100px rgba(124,58,237,0.6);
-}
+      .sun-core {
+        width: 88px;
+        height: 88px;
+        border-radius: 50%;
+        background: radial-gradient(circle at 35% 35%,
+            #a78bfa,
+            #7c3aed 50%,
+            #4c1d95);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Sora', sans-serif;
+        font-size: 1.6rem;
+        font-weight: 800;
+        color: #fff;
+        letter-spacing: -1px;
+        box-shadow:
+          0 0 0 4px rgba(124, 58, 237, 0.3),
+          0 0 30px rgba(124, 58, 237, 0.8),
+          0 0 60px rgba(124, 58, 237, 0.4),
+          0 0 100px rgba(124, 58, 237, 0.2);
+        z-index: 2;
+        position: relative;
+        animation: sunRotate 20s linear infinite;
+        cursor: pointer;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
 
-@keyframes sunRotate {
-  from { box-shadow:
-    0 0 0 4px rgba(124,58,237,0.3),
-    0 0 30px rgba(124,58,237,0.8),
-    0 0 60px rgba(124,58,237,0.4); }
-  50%  { box-shadow:
-    0 0 0 4px rgba(6,182,212,0.3),
-    0 0 30px rgba(6,182,212,0.8),
-    0 0 60px rgba(6,182,212,0.4); }
-  to   { box-shadow:
-    0 0 0 4px rgba(124,58,237,0.3),
-    0 0 30px rgba(124,58,237,0.8),
-    0 0 60px rgba(124,58,237,0.4); }
-}
+      .sun-core:hover {
+        transform: scale(1.12);
+        box-shadow:
+          0 0 0 6px rgba(124, 58, 237, 0.4),
+          0 0 50px rgba(124, 58, 237, 1),
+          0 0 100px rgba(124, 58, 237, 0.6);
+      }
 
-/* Pulse rings from sun */
-.sun-pulse {
-  position: absolute;
-  width: 88px;
-  height: 88px;
-  border-radius: 50%;
-  border: 1.5px solid rgba(124,58,237,0.5);
-  animation: sunPulse 2.5s ease-out infinite;
-  pointer-events: none;
-}
-.sun-pulse-2 {
-  animation-delay: 1.25s;
-}
-@keyframes sunPulse {
-  0%   { transform: scale(1);   opacity: 0.7; }
-  100% { transform: scale(3.5); opacity: 0; }
-}
+      @keyframes sunRotate {
+        from {
+          box-shadow:
+            0 0 0 4px rgba(124, 58, 237, 0.3),
+            0 0 30px rgba(124, 58, 237, 0.8),
+            0 0 60px rgba(124, 58, 237, 0.4);
+        }
 
-/* ── ORBITS ── */
-.orbit {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  border-radius: 50%;
-  border: 1px solid rgba(255,255,255,0.06);
-  transform: translate(-50%, -50%);
-  animation: orbitSpin linear infinite;
-  transform-origin: center center;
-}
+        50% {
+          box-shadow:
+            0 0 0 4px rgba(6, 182, 212, 0.3),
+            0 0 30px rgba(6, 182, 212, 0.8),
+            0 0 60px rgba(6, 182, 212, 0.4);
+        }
 
-/* Orbit sizes + speeds */
-.orbit-1 { width: 150px; height: 150px; 
-            animation-duration: 6s; }
-.orbit-2 { width: 210px; height: 210px; 
-            animation-duration: 9s; }
-.orbit-3 { width: 280px; height: 280px; 
-            animation-duration: 13s; }
-.orbit-4 { width: 350px; height: 350px; 
-            animation-duration: 17s; }
-.orbit-5 { width: 420px; height: 420px; 
-            animation-duration: 22s; }
-.orbit-6 { width: 500px; height: 500px; 
-            animation-duration: 28s; 
-            animation-direction: reverse; }
+        to {
+          box-shadow:
+            0 0 0 4px rgba(124, 58, 237, 0.3),
+            0 0 30px rgba(124, 58, 237, 0.8),
+            0 0 60px rgba(124, 58, 237, 0.4);
+        }
+      }
 
-/* Glowing orbit rings on hover */
-.orbit:hover {
-  border-color: rgba(124,58,237,0.25);
-  box-shadow: 0 0 12px rgba(124,58,237,0.15);
-}
+      /* Pulse rings from sun */
+      .sun-pulse {
+        position: absolute;
+        width: 88px;
+        height: 88px;
+        border-radius: 50%;
+        border: 1.5px solid rgba(124, 58, 237, 0.5);
+        animation: sunPulse 2.5s ease-out infinite;
+        pointer-events: none;
+      }
 
-@keyframes orbitSpin {
-  from { transform: translate(-50%,-50%) rotate(0deg); }
-  to   { transform: translate(-50%,-50%) rotate(360deg); }
-}
+      .sun-pulse-2 {
+        animation-delay: 1.25s;
+      }
 
-/* ── PLANETS ── */
-.planet {
-  position: absolute;
-  top: -22px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.05);
-  border: 1.5px solid rgba(255,255,255,0.15);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.3rem;
-  cursor: pointer;
-  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1),
-              box-shadow 0.3s ease,
-              border-color 0.3s ease;
-  backdrop-filter: blur(8px);
-  /* Counter-rotate so emoji stays upright */
-  animation: counterSpin linear infinite;
-}
+      @keyframes sunPulse {
+        0% {
+          transform: scale(1);
+          opacity: 0.7;
+        }
 
-.orbit-1 .planet { animation-duration: 6s; }
-.orbit-2 .planet { animation-duration: 9s; }
-.orbit-3 .planet { animation-duration: 13s; }
-.orbit-4 .planet { animation-duration: 17s; }
-.orbit-5 .planet { animation-duration: 22s; }
-.orbit-6 .planet { animation-duration: 28s; 
-                   animation-direction: reverse; }
+        100% {
+          transform: scale(3.5);
+          opacity: 0;
+        }
+      }
 
-@keyframes counterSpin {
-  from { transform: translateX(-50%) rotate(0deg); }
-  to   { transform: translateX(-50%) rotate(-360deg); }
-}
+      /* ── ORBITS ── */
+      .orbit {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        border-radius: 50%;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        transform: translate(-50%, -50%);
+        animation: orbitSpin linear infinite;
+        transform-origin: center center;
+      }
 
-/* Planet hover */
-.planet:hover {
-  transform: translateX(-50%) scale(1.4) !important;
-  border-color: #7c3aed;
-  box-shadow:
-    0 0 0 3px rgba(124,58,237,0.3),
-    0 0 20px rgba(124,58,237,0.6);
-  z-index: 999;
-}
+      /* Orbit sizes + speeds */
+      .orbit-1 {
+        width: 150px;
+        height: 150px;
+        animation-duration: 6s;
+      }
 
-/* Planet glow colors per orbit */
-.planet-1 { 
-  border-color: rgba(124,58,237,0.4);
-  box-shadow: 0 0 12px rgba(124,58,237,0.4); 
-}
-.planet-2 { 
-  border-color: rgba(6,182,212,0.4);
-  box-shadow: 0 0 12px rgba(6,182,212,0.4); 
-}
-.planet-3 { 
-  border-color: rgba(16,185,129,0.4);
-  box-shadow: 0 0 12px rgba(16,185,129,0.4); 
-}
-.planet-4 { 
-  border-color: rgba(245,158,11,0.4);
-  box-shadow: 0 0 12px rgba(245,158,11,0.4); 
-}
-.planet-5 { 
-  border-color: rgba(239,68,68,0.4);
-  box-shadow: 0 0 12px rgba(239,68,68,0.4); 
-}
-.planet-6 { 
-  border-color: rgba(219,39,119,0.4);
-  box-shadow: 0 0 12px rgba(219,39,119,0.4); 
-}
+      .orbit-2 {
+        width: 210px;
+        height: 210px;
+        animation-duration: 9s;
+      }
 
-/* ── PLANET LABELS ── */
-.planet-label {
-  position: absolute;
-  bottom: -26px;
-  left: 50%;
-  transform: translateX(-50%);
-  white-space: nowrap;
-  font-size: 0.68rem;
-  color: #64748b;
-  font-family: 'JetBrains Mono', monospace;
-  opacity: 0;
-  transition: opacity 0.2s ease, color 0.2s ease;
-  pointer-events: none;
-}
-.planet:hover .planet-label {
-  opacity: 1;
-  color: #a78bfa;
-}
+      .orbit-3 {
+        width: 280px;
+        height: 280px;
+        animation-duration: 13s;
+      }
 
-/* ── CAPTION ── */
-.solar-caption {
-  margin-top: 32px;
-  color: #475569;
-  font-size: 0.85rem;
-  font-family: 'Sora', sans-serif;
-  text-align: center;
-  letter-spacing: 0.3px;
-}
+      .orbit-4 {
+        width: 350px;
+        height: 350px;
+        animation-duration: 17s;
+      }
 
-/* Responsive */
-@media (max-width: 600px) {
-  .solar-system { 
-    width: 320px; 
-    height: 320px; 
-    transform: scale(0.65); 
-  }
-}
-</style>
+      .orbit-5 {
+        width: 420px;
+        height: 420px;
+        animation-duration: 22s;
+      }
 
-<script>
-// Pause all orbits on hover
-document.querySelectorAll('.orbit').forEach(orbit => {
-  orbit.addEventListener('mouseenter', () => {
-    document.querySelectorAll('.orbit, .planet')
+      .orbit-6 {
+        width: 500px;
+        height: 500px;
+        animation-duration: 28s;
+        animation-direction: reverse;
+      }
+
+      /* Glowing orbit rings on hover */
+      .orbit:hover {
+        border-color: rgba(124, 58, 237, 0.25);
+        box-shadow: 0 0 12px rgba(124, 58, 237, 0.15);
+      }
+
+      @keyframes orbitSpin {
+        from {
+          transform: translate(-50%, -50%) rotate(0deg);
+        }
+
+        to {
+          transform: translate(-50%, -50%) rotate(360deg);
+        }
+      }
+
+      /* ── PLANETS ── */
+      .planet {
+        position: absolute;
+        top: -22px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1.5px solid rgba(255, 255, 255, 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.3rem;
+        cursor: pointer;
+        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+          box-shadow 0.3s ease,
+          border-color 0.3s ease;
+        backdrop-filter: blur(8px);
+        /* Counter-rotate so emoji stays upright */
+        animation: counterSpin linear infinite;
+      }
+
+      .orbit-1 .planet {
+        animation-duration: 6s;
+      }
+
+      .orbit-2 .planet {
+        animation-duration: 9s;
+      }
+
+      .orbit-3 .planet {
+        animation-duration: 13s;
+      }
+
+      .orbit-4 .planet {
+        animation-duration: 17s;
+      }
+
+      .orbit-5 .planet {
+        animation-duration: 22s;
+      }
+
+      .orbit-6 .planet {
+        animation-duration: 28s;
+        animation-direction: reverse;
+      }
+
+      @keyframes counterSpin {
+        from {
+          transform: translateX(-50%) rotate(0deg);
+        }
+
+        to {
+          transform: translateX(-50%) rotate(-360deg);
+        }
+      }
+
+      /* Planet hover */
+      .planet:hover {
+        transform: translateX(-50%) scale(1.4) !important;
+        border-color: #7c3aed;
+        box-shadow:
+          0 0 0 3px rgba(124, 58, 237, 0.3),
+          0 0 20px rgba(124, 58, 237, 0.6);
+        z-index: 999;
+      }
+
+      /* Planet glow colors per orbit */
+      .planet-1 {
+        border-color: rgba(124, 58, 237, 0.4);
+        box-shadow: 0 0 12px rgba(124, 58, 237, 0.4);
+      }
+
+      .planet-2 {
+        border-color: rgba(6, 182, 212, 0.4);
+        box-shadow: 0 0 12px rgba(6, 182, 212, 0.4);
+      }
+
+      .planet-3 {
+        border-color: rgba(16, 185, 129, 0.4);
+        box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
+      }
+
+      .planet-4 {
+        border-color: rgba(245, 158, 11, 0.4);
+        box-shadow: 0 0 12px rgba(245, 158, 11, 0.4);
+      }
+
+      .planet-5 {
+        border-color: rgba(239, 68, 68, 0.4);
+        box-shadow: 0 0 12px rgba(239, 68, 68, 0.4);
+      }
+
+      .planet-6 {
+        border-color: rgba(219, 39, 119, 0.4);
+        box-shadow: 0 0 12px rgba(219, 39, 119, 0.4);
+      }
+
+      /* ── PLANET LABELS ── */
+      .planet-label {
+        position: absolute;
+        bottom: -26px;
+        left: 50%;
+        transform: translateX(-50%);
+        white-space: nowrap;
+        font-size: 0.68rem;
+        color: #64748b;
+        font-family: 'JetBrains Mono', monospace;
+        opacity: 0;
+        transition: opacity 0.2s ease, color 0.2s ease;
+        pointer-events: none;
+      }
+
+      .planet:hover .planet-label {
+        opacity: 1;
+        color: #a78bfa;
+      }
+
+      /* ── CAPTION ── */
+      .solar-caption {
+        margin-top: 32px;
+        color: #475569;
+        font-size: 0.85rem;
+        font-family: 'Sora', sans-serif;
+        text-align: center;
+        letter-spacing: 0.3px;
+      }
+
+      /* Responsive */
+      @media (max-width: 600px) {
+        .solar-system {
+          width: 320px;
+          height: 320px;
+          transform: scale(0.65);
+        }
+      }
+    </style>
+
+    <script>
+      // Pause all orbits on hover
+      document.querySelectorAll('.orbit').forEach(orbit => {
+        orbit.addEventListener('mouseenter', () => {
+          document.querySelectorAll('.orbit, .planet')
             .forEach(el => el.style.animationPlayState = 'paused');
-  });
-  orbit.addEventListener('mouseleave', () => {
-    document.querySelectorAll('.orbit, .planet')
+        });
+        orbit.addEventListener('mouseleave', () => {
+          document.querySelectorAll('.orbit, .planet')
             .forEach(el => el.style.animationPlayState = 'running');
-  });
-});
+        });
+      });
 
-// Planet click — navigate to relevant page
-const planetLinks = {
-  'planet-1': '/upload',
-  'planet-2': '/model-upload',
-  'planet-3': '/report',
-  'planet-4': '/fix-suggestions',
-  'planet-5': '/report',
-  'planet-6': '/chat'
-};
-document.querySelectorAll('.planet').forEach(planet => {
-  const key = [...planet.classList]
-               .find(c => c.startsWith('planet-') && c !== 'planet');
-  if (key && planetLinks[key]) {
-    planet.style.cursor = 'pointer';
-    planet.addEventListener('click', () => {
-      window.location.href = planetLinks[key];
-    });
-  }
-});
+      // Planet click — navigate to relevant page
+      const planetLinks = {
+        'planet-1': '/upload',
+        'planet-2': '/model-upload',
+        'planet-3': '/report',
+        'planet-4': '/fix-suggestions',
+        'planet-5': '/report',
+        'planet-6': '/chat'
+      };
+      document.querySelectorAll('.planet').forEach(planet => {
+        const key = [...planet.classList]
+          .find(c => c.startsWith('planet-') && c !== 'planet');
+        if (key && planetLinks[key]) {
+          planet.style.cursor = 'pointer';
+          planet.addEventListener('click', () => {
+            window.location.href = planetLinks[key];
+          });
+        }
+      });
 
-// Sun click — go to dashboard
-document.querySelector('.sun-core')
+      // Sun click — go to dashboard
+      document.querySelector('.sun-core')
         ?.addEventListener('click', () => {
-  window.location.href = '/';
-});
+          window.location.href = '/';
+        });
 
-// Tilt entire solar system on mouse move
-const system = document.getElementById('solar-system');
-document.addEventListener('mousemove', (e) => {
-  if (!system) return;
-  const rect = system.getBoundingClientRect();
-  const cx = rect.left + rect.width / 2;
-  const cy = rect.top + rect.height / 2;
-  const dx = (e.clientX - cx) / window.innerWidth;
-  const dy = (e.clientY - cy) / window.innerHeight;
-  system.style.transform = 
-    `perspective(800px) 
+      // Tilt entire solar system on mouse move
+      const system = document.getElementById('solar-system');
+      document.addEventListener('mousemove', (e) => {
+        if (!system) return;
+        const rect = system.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        const dx = (e.clientX - cx) / window.innerWidth;
+        const dy = (e.clientY - cy) / window.innerHeight;
+        system.style.transform =
+          `perspective(800px) 
      rotateX(${dy * -8}deg) 
      rotateY(${dx * 8}deg)`;
-});
-</script>
+      });
+    </script>
   </div>
 </section>
 
@@ -561,7 +691,8 @@ document.addEventListener('mousemove', (e) => {
           <li>CSV upload up to 10MB</li>
           <li>Community support</li>
         </ul>
-        <a href="{{ url_for('upload.upload_page') }}" class="btn-outline" style="justify-content:center;width:100%;">Get Started</a>
+        <a href="{{ url_for('upload.upload_page') }}" class="btn-outline" style="justify-content:center;width:100%;">Get
+          Started</a>
       </div>
       <div class="card pricing-card elevated fade-up">
         <div class="pricing-tier">Standard</div>
@@ -573,7 +704,8 @@ document.addEventListener('mousemove', (e) => {
           <li>PDF export</li>
           <li>Priority support</li>
         </ul>
-        <a href="{{ url_for('upload.upload_page') }}" class="btn-primary" style="justify-content:center;width:100%;">Start Free Trial</a>
+        <a href="{{ url_for('upload.upload_page') }}" class="btn-primary"
+          style="justify-content:center;width:100%;">Start Free Trial</a>
       </div>
       <div class="card pricing-card fade-up">
         <div class="pricing-tier">Premium</div>
@@ -586,7 +718,8 @@ document.addEventListener('mousemove', (e) => {
           <li>Team collaboration</li>
           <li>Dedicated account manager</li>
         </ul>
-        <a href="{{ url_for('upload.upload_page') }}" class="btn-primary" style="justify-content:center;width:100%;">Contact Sales</a>
+        <a href="{{ url_for('upload.upload_page') }}" class="btn-primary"
+          style="justify-content:center;width:100%;">Contact Sales</a>
       </div>
     </div>
   </div>
@@ -603,26 +736,38 @@ document.addEventListener('mousemove', (e) => {
     <div class="grid-3">
       <div class="card fade-up">
         <div class="testimonial-quote">"</div>
-        <div class="testimonial-text">FairSight caught biases in our hiring model we never would have found manually. The AI suggestions were spot-on.</div>
+        <div class="testimonial-text">FairSight caught biases in our hiring model we never would have found manually.
+          The AI suggestions were spot-on.</div>
         <div class="testimonial-author">
           <div class="testimonial-avatar">AK</div>
-          <div><div class="testimonial-name">Aisha Khan</div><div class="testimonial-role">ML Engineer, TechCorp</div></div>
+          <div>
+            <div class="testimonial-name">Aisha Khan</div>
+            <div class="testimonial-role">ML Engineer, TechCorp</div>
+          </div>
         </div>
       </div>
       <div class="card fade-up">
         <div class="testimonial-quote">"</div>
-        <div class="testimonial-text">The advanced analytics alone justified the investment. We could find complex disparities before deploying our models.</div>
+        <div class="testimonial-text">The advanced analytics alone justified the investment. We could find complex
+          disparities before deploying our models.</div>
         <div class="testimonial-author">
           <div class="testimonial-avatar">JR</div>
-          <div><div class="testimonial-name">James Rivera</div><div class="testimonial-role">Data Lead, FinServ Inc</div></div>
+          <div>
+            <div class="testimonial-name">James Rivera</div>
+            <div class="testimonial-role">Data Lead, FinServ Inc</div>
+          </div>
         </div>
       </div>
       <div class="card fade-up">
         <div class="testimonial-quote">"</div>
-        <div class="testimonial-text">Clean interface, instant results, and the Gemini-powered chat is incredibly useful for non-technical stakeholders.</div>
+        <div class="testimonial-text">Clean interface, instant results, and the Gemini-powered chat is incredibly useful
+          for non-technical stakeholders.</div>
         <div class="testimonial-author">
           <div class="testimonial-avatar">SP</div>
-          <div><div class="testimonial-name">Sarah Park</div><div class="testimonial-role">VP Product, DataFlow</div></div>
+          <div>
+            <div class="testimonial-name">Sarah Park</div>
+            <div class="testimonial-role">VP Product, DataFlow</div>
+          </div>
         </div>
       </div>
     </div>
@@ -638,20 +783,36 @@ document.addEventListener('mousemove', (e) => {
     </div>
     <div class="fade-up">
       <div class="faq-item">
-        <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">What file formats do you support? <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
-        <div class="faq-answer">Currently we support CSV files up to 50MB. We're working on support for Excel, Parquet, and direct database connections.</div>
+        <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">What file formats do you
+          support? <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6" />
+          </svg></button>
+        <div class="faq-answer">Currently we support CSV files up to 50MB. We're working on support for Excel, Parquet,
+          and direct database connections.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">How is the fairness score calculated? <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
-        <div class="faq-answer">The fairness score is derived from multiple metrics including demographic parity, disparate impact ratio, and equalized odds. A score of 100 means perfect fairness across all groups.</div>
+        <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">How is the fairness score
+          calculated? <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6" />
+          </svg></button>
+        <div class="faq-answer">The fairness score is derived from multiple metrics including demographic parity,
+          disparate impact ratio, and equalized odds. A score of 100 means perfect fairness across all groups.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">Is my data secure? <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
-        <div class="faq-answer">Yes. All uploads are processed in-memory and never stored permanently. We don't share your data with any third parties.</div>
+        <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">Is my data secure? <svg
+            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6" />
+          </svg></button>
+        <div class="faq-answer">Yes. All uploads are processed in-memory and never stored permanently. We don't share
+          your data with any third parties.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">What AI model powers the suggestions? <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
-        <div class="faq-answer">FairSight is powered by Google's Gemini AI, which analyzes your bias report context and generates tailored remediation strategies.</div>
+        <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">What AI model powers the
+          suggestions? <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6" />
+          </svg></button>
+        <div class="faq-answer">FairSight is powered by Google's Gemini AI, which analyzes your bias report context and
+          generates tailored remediation strategies.</div>
       </div>
     </div>
   </div>
@@ -661,7 +822,8 @@ document.addEventListener('mousemove', (e) => {
 <section class="section-padding" style="text-align:center;">
   <div class="container">
     <h2 class="section-headline gradient-text fade-up" style="margin-bottom:16px;">Ready to detect bias?</h2>
-    <p class="fade-up" style="max-width:480px;margin:0 auto 32px;">Start your first audit in under 60 seconds. No credit card required.</p>
+    <p class="fade-up" style="max-width:480px;margin:0 auto 32px;">Start your first audit in under 60 seconds. No credit
+      card required.</p>
     <a href="{{ url_for('upload.upload_page') }}" class="btn-primary fade-up">Start Free Audit</a>
   </div>
 </section>
@@ -671,67 +833,68 @@ document.addEventListener('mousemove', (e) => {
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/laser-flow.js') }}"></script>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function () {
     // ── LaserFlow WebGL ──
     var heroMount = document.getElementById('laser-flow-hero');
     if (heroMount && typeof LaserFlow !== 'undefined' && typeof THREE !== 'undefined') {
-        var lf = new LaserFlow(heroMount, {
-            color: '#a78bfa',
-            horizontalBeamOffset: 0.0,
-            verticalBeamOffset: -0.25,
-            verticalSizing: 2.5,
-            horizontalSizing: 0.4,
-            fogIntensity: 0.3,
-            wispIntensity: 3.0,
-            wispSpeed: 10.0,
-            flowSpeed: 0.25,
-            flowStrength: 0.2,
-            fogScale: 0.3,
-            fogFallSpeed: 0.5,
-            wispDensity: 0.8,
-            decay: 1.1,
-            falloffStart: 1.2,
-            mouseTiltStrength: 0.008
-        });
+      var lf = new LaserFlow(heroMount, {
+        color: '#a78bfa',
+        horizontalBeamOffset: 0.0,
+        verticalBeamOffset: -0.25,
+        verticalSizing: 2.5,
+        horizontalSizing: 0.4,
+        fogIntensity: 0.3,
+        wispIntensity: 3.0,
+        wispSpeed: 10.0,
+        flowSpeed: 0.25,
+        flowStrength: 0.2,
+        fogScale: 0.3,
+        fogFallSpeed: 0.5,
+        wispDensity: 0.8,
+        decay: 1.1,
+        falloffStart: 1.2,
+        mouseTiltStrength: 0.008
+      });
 
-        // Align the horizontal beam exactly with the top of the eb-panel (200px from bottom)
-        function alignBeam() {
-            if (window.innerWidth <= 768) return; // Panel layout changes on mobile
-            var h = heroMount.clientHeight;
-            var targetY = 195; // 195px from the bottom matches the eb-merge CSS bloom
-            lf.uniforms.uBeamYFrac.value = (targetY / h) - 0.5;
-        }
-        window.addEventListener('resize', alignBeam);
-        alignBeam();
+      // Align the horizontal beam exactly with the top of the eb-panel (200px from bottom)
+      function alignBeam() {
+        if (window.innerWidth <= 768) return; // Panel layout changes on mobile
+        var h = heroMount.clientHeight;
+        var targetY = 195; // 195px from the bottom matches the eb-merge CSS bloom
+        lf.uniforms.uBeamYFrac.value = (targetY / h) - 0.5;
+      }
+      window.addEventListener('resize', alignBeam);
+      alignBeam();
     }
 
     // ── Mouse spotlight ──
     var heroWrap = document.getElementById('eb-hero-wrap');
     var spotlight = document.getElementById('eb-spotlight');
     if (heroWrap && spotlight) {
-        heroWrap.addEventListener('mousemove', function(e) {
-            var rect = heroWrap.getBoundingClientRect();
-            spotlight.style.setProperty('--mx', (e.clientX - rect.left) + 'px');
-            spotlight.style.setProperty('--my', (e.clientY - rect.top) + 'px');
-        });
-        heroWrap.addEventListener('mouseleave', function() {
-            spotlight.style.setProperty('--mx', '-9999px');
-            spotlight.style.setProperty('--my', '-9999px');
-        });
+      heroWrap.addEventListener('mousemove', function (e) {
+        var rect = heroWrap.getBoundingClientRect();
+        spotlight.style.setProperty('--mx', (e.clientX - rect.left) + 'px');
+        spotlight.style.setProperty('--my', (e.clientY - rect.top) + 'px');
+      });
+      heroWrap.addEventListener('mouseleave', function () {
+        spotlight.style.setProperty('--mx', '-9999px');
+        spotlight.style.setProperty('--my', '-9999px');
+      });
     }
-});
+  });
 </script>
 {% if analysis %}
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function () {
     const canvas = document.getElementById('hero-fairness-gauge');
     if (!canvas) return;
-    const score = {{ analysis.fairness_score }};
-    new Chart(canvas, {
-        type: 'doughnut',
-        data: { datasets: [{ data: [score, 100-score], backgroundColor: ['#ffffff','rgba(255,255,255,0.05)'], borderWidth: 0 }] },
-        options: { responsive: true, maintainAspectRatio: false, cutout: '82%', plugins: { legend: { display: false }, tooltip: { enabled: false } }, animation: { duration: 1500, easing: 'easeOutQuart' } }
-    });
+    const score = {{ analysis.fairness_score }
+  };
+  new Chart(canvas, {
+    type: 'doughnut',
+    data: { datasets: [{ data: [score, 100 - score], backgroundColor: ['#ffffff', 'rgba(255,255,255,0.05)'], borderWidth: 0 }] },
+    options: { responsive: true, maintainAspectRatio: false, cutout: '82%', plugins: { legend: { display: false }, tooltip: { enabled: false } }, animation: { duration: 1500, easing: 'easeOutQuart' } }
+  });
 });
 </script>
 {% endif %}

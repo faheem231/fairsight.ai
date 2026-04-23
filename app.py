@@ -8,6 +8,7 @@ load_dotenv()
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
+    app.config['TEMPLATES_AUTO_RELOAD'] = True
 
     # Ensure upload directory exists
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
