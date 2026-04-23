@@ -37,8 +37,13 @@ def create_app():
     # Protect all routes — redirect to login if not authenticated
     @app.before_request
     def require_login():
-        # Allow static files, login, guest, and CSV-columns endpoint without auth
-        allowed_endpoints = {'auth.login', 'auth.guest_login', 'auth.logout', 'static', 'model.csv_columns'}
+        allowed_endpoints = {
+            'auth.login',
+            'auth.guest_login',
+            'auth.logout',
+            'static',
+            'model.csv_columns'
+        }
         if request.endpoint in allowed_endpoints:
             return None
         if not session.get('authenticated'):
@@ -46,7 +51,11 @@ def create_app():
 
     return app
 
-if __name__ == '__main__':
-    app = create_app()
-    app.run(host='0.0.0.0', port=5001, debug=app.config['DEBUG'])
 
+# ✅ IMPORTANT: expose app for Vercel
+app = create_app()
+
+
+# Optional: local run
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5001, debug=app.config.get('DEBUG', True))
