@@ -320,10 +320,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // ── LaserFlow WebGL ──
     var heroMount = document.getElementById('laser-flow-hero');
     if (heroMount && typeof LaserFlow !== 'undefined' && typeof THREE !== 'undefined') {
-        new LaserFlow(heroMount, {
+        var lf = new LaserFlow(heroMount, {
             color: '#a78bfa',
             horizontalBeamOffset: 0.0,
-            verticalBeamOffset: 0.0,
+            verticalBeamOffset: -0.25,
             verticalSizing: 2.5,
             horizontalSizing: 0.4,
             fogIntensity: 0.3,
@@ -338,6 +338,16 @@ document.addEventListener('DOMContentLoaded', function() {
             falloffStart: 1.2,
             mouseTiltStrength: 0.008
         });
+
+        // Align the horizontal beam exactly with the top of the eb-panel (200px from bottom)
+        function alignBeam() {
+            if (window.innerWidth <= 768) return; // Panel layout changes on mobile
+            var h = heroMount.clientHeight;
+            var targetY = 195; // 195px from the bottom matches the eb-merge CSS bloom
+            lf.uniforms.uBeamYFrac.value = (targetY / h) - 0.5;
+        }
+        window.addEventListener('resize', alignBeam);
+        alignBeam();
     }
 
     // ── Mouse spotlight ──

@@ -104,6 +104,116 @@
         <div style="position:relative;height:300px;"><canvas id="composition-chart"></canvas></div>
       </div>
     </div>
+
+    <!-- Advanced Analytics Section -->
+    <div style="margin-bottom: 48px;" class="fade-up">
+      <h2 style="font-size: 20px; font-weight: 600; color: var(--white); margin-bottom: 24px; display: flex; align-items: center; gap: 8px;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-violet)" stroke-width="2"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>
+        Advanced Analytics
+      </h2>
+      
+      <div class="grid-2" style="margin-bottom: 24px;">
+        <!-- Statistical Significance -->
+        <div class="card">
+          <div style="font-size:16px;font-weight:600;color:var(--white);margin-bottom:12px;display:flex;align-items:center;gap:8px;">
+            <span>Statistical Significance</span>
+            {% if analysis.stat_significance and analysis.stat_significance.significant %}
+            <span style="font-size:12px;background:rgba(239,68,68,0.2);color:#fca5a5;padding:2px 8px;border-radius:12px;">Significant Bias</span>
+            {% elif analysis.stat_significance and not analysis.stat_significance.significant %}
+            <span style="font-size:12px;background:rgba(16,185,129,0.2);color:#6ee7b7;padding:2px 8px;border-radius:12px;">Likely Random</span>
+            {% endif %}
+          </div>
+          {% if analysis.stat_significance %}
+          <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">Chi-squared test (p-value: {{ analysis.stat_significance.p_value }})</p>
+          <div style="font-size:14px;line-height:1.6;">
+            {% if analysis.stat_significance.significant %}
+              The observed disparity between groups is <strong style="color:var(--white);">statistically significant</strong>. It is highly unlikely this occurred by random chance (Confidence: {{ analysis.stat_significance.confidence }}).
+            {% else %}
+              The disparity between groups is <strong style="color:var(--white);">not statistically significant</strong>. The differences could be due to natural random variation in the dataset.
+            {% endif %}
+          </div>
+          {% else %}
+          <div style="font-size:14px;color:var(--muted);">Metric unavailable.</div>
+          {% endif %}
+        </div>
+
+        <!-- Representation Balance -->
+        <div class="card">
+          <div style="font-size:16px;font-weight:600;color:var(--white);margin-bottom:12px;">Representation Balance</div>
+          {% if analysis.representation %}
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+            <div style="font-size:32px;font-weight:700;color:var(--white);">{{ analysis.representation.balance_score }}<span style="font-size:16px;color:var(--muted);font-weight:500;">/100</span></div>
+            <div style="text-align:right;">
+              <div style="font-size:12px;color:var(--muted);">Imbalance Ratio</div>
+              <div style="font-size:16px;font-weight:600;color:var(--white);">{{ analysis.representation.imbalance_ratio }}x</div>
+            </div>
+          </div>
+          <div style="font-size:13px;color:var(--muted);">
+            Largest: <strong style="color:#e2e8f0;">{{ analysis.representation.largest_group }}</strong> ({{ analysis.representation.largest_pct }}%)<br>
+            Smallest: <strong style="color:#e2e8f0;">{{ analysis.representation.smallest_group }}</strong> ({{ analysis.representation.smallest_pct }}%)
+          </div>
+          {% else %}
+          <div style="font-size:14px;color:var(--muted);">Metric unavailable.</div>
+          {% endif %}
+        </div>
+      </div>
+      
+      <!-- Detailed Group Breakdown -->
+      {% if analysis.group_stats %}
+      <div class="card" style="margin-bottom: 24px;">
+        <div style="font-size:16px;font-weight:600;color:var(--white);margin-bottom:16px;">Detailed Group Breakdown</div>
+        <div style="overflow-x:auto;">
+          <table style="width:100%;border-collapse:collapse;font-size:13px;font-family:'Inter',sans-serif;text-align:left;">
+            <thead>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.1);color:var(--muted);">
+                <th style="padding:12px 16px;font-weight:500;">Group</th>
+                <th style="padding:12px 16px;font-weight:500;">Count</th>
+                <th style="padding:12px 16px;font-weight:500;">% of Dataset</th>
+                <th style="padding:12px 16px;font-weight:500;">Positives</th>
+                <th style="padding:12px 16px;font-weight:500;">Negatives</th>
+                <th style="padding:12px 16px;font-weight:500;">Selection Rate</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for group, stats in analysis.group_stats.items() %}
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                <td style="padding:12px 16px;color:var(--white);font-weight:500;text-transform:capitalize;">{{ group }}</td>
+                <td style="padding:12px 16px;color:var(--body-text);">{{ stats.count }}</td>
+                <td style="padding:12px 16px;color:var(--body-text);">{{ stats.pct_of_dataset }}%</td>
+                <td style="padding:12px 16px;color:#34d399;">{{ stats.positive }}</td>
+                <td style="padding:12px 16px;color:#f87171;">{{ stats.negative }}</td>
+                <td style="padding:12px 16px;color:var(--white);">{{ (stats.positive_rate * 100)|round(1) }}%</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      {% endif %}
+      
+      <!-- Feature Correlations (Proxies) -->
+      {% if analysis.feature_correlations and analysis.feature_correlations|length > 0 %}
+      <div class="card">
+        <div style="font-size:16px;font-weight:600;color:var(--white);margin-bottom:12px;">Potential Proxies (Feature Correlation)</div>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">These numeric features correlate with the sensitive attribute and might act as proxies, unintentionally causing bias even if the sensitive attribute is hidden.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;">
+          {% for feature, details in analysis.feature_correlations.items() %}
+            <div style="background:rgba(255,255,255,0.03);border:1px solid {% if details.is_proxy %}rgba(239,68,68,0.3){% else %}rgba(255,255,255,0.1){% endif %};border-radius:8px;padding:12px 16px;flex:1;min-width:200px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <span style="font-weight:600;color:var(--white);">{{ feature }}</span>
+                {% if details.is_proxy %}
+                  <span style="font-size:10px;text-transform:uppercase;letter-spacing:0.05em;background:rgba(239,68,68,0.2);color:#fca5a5;padding:2px 6px;border-radius:4px;font-weight:600;">High Risk</span>
+                {% endif %}
+              </div>
+              <div style="font-size:24px;font-weight:700;color:{% if details.is_proxy %}#fca5a5{% else %}var(--white){% endif %};">{{ details.correlation }}</div>
+              <div style="font-size:12px;color:var(--muted);">Absolute Correlation</div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+    </div>
     </div><!-- /report-content -->
 
     <!-- Actions + Export -->

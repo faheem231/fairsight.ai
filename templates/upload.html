@@ -72,14 +72,56 @@
           <p style="font-size:12px;color:var(--muted);margin-bottom:12px;">The outcome variable (e.g. hired, approved)</p>
           <select name="target_col" id="target-col" required><option value="">— Choose target column —</option></select>
         </div>
-        <div class="card fade-up">
+        <!-- Dynamic Column Selector -->
+        <div class="glass-card" style="margin-top: 16px;">
           <label for="sensitive-col" style="font-size:14px;font-weight:600;color:var(--white);display:flex;align-items:center;gap:8px;margin-bottom:6px;">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--white)" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            Sensitive Attribute
+            Select Sensitive Attribute
           </label>
-          <p style="font-size:12px;color:var(--muted);margin-bottom:12px;">The protected characteristic (e.g. gender, race)</p>
-          <select name="sensitive_col" id="sensitive-col" required><option value="">— Choose sensitive attribute —</option></select>
+          <p class="upload-hint" style="font-size:12px;color:var(--muted);margin-bottom:12px;">Upload your CSV first — columns will appear here automatically</p>
+
+          <select name="sensitive_col" id="sensitive-col" class="col-select" disabled>
+            <option value="">— Upload a CSV to see columns —</option>
+          </select>
+
+          <div class="col-chips" id="col-chips"></div>
         </div>
+
+        <style>
+          .col-select {
+            width: 100%;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 12px 16px;
+            color: #f1f5f9;
+            font-size: 0.95rem;
+            font-family: 'Sora', sans-serif;
+            outline: none;
+            cursor: pointer;
+            transition: border-color 0.2s;
+          }
+          .col-select:focus { border-color: #7c3aed; }
+          .col-select:disabled { opacity: 0.4; cursor: not-allowed; }
+          .col-select option { background: #0f1729; color: #f1f5f9; }
+          .col-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+          .col-chip {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(124,58,237,0.1);
+            border: 1px solid rgba(124,58,237,0.25);
+            color: #a78bfa;
+            cursor: pointer;
+            transition: all 0.2s;
+          }
+          .col-chip:hover, .col-chip.active {
+            background: rgba(124,58,237,0.3);
+            border-color: #7c3aed;
+            color: #fff;
+          }
+        </style>
       </div>
 
       <!-- Submit -->
@@ -109,7 +151,35 @@
 <!-- Loading Overlay -->
 <div class="loading-overlay" id="loading-overlay" style="display:none;">
   <div style="text-align:center;">
-    <div class="spinner" style="margin:0 auto 24px;"></div>
+    <div class="ai-scanner-wrapper" style="margin: 0 auto 24px; transform: scale(0.6); min-height: 200px;">
+      <div class="ai-scanner-container">
+        <div class="ai-scanner-glow"></div>
+        <div class="ai-scanner-ripple" style="animation-delay: 0s;"></div>
+        <div class="ai-scanner-ripple" style="animation-delay: 1s;"></div>
+        <div class="ai-scanner-ripple" style="animation-delay: 2s;"></div>
+        <div class="ai-scanner-core">
+          <div class="ai-scanner-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1.5">
+              <path d="M12 2L2 7l10 5 10-5-10-5z" />
+              <path d="M2 17l10 5 10-5" />
+              <path d="M2 12l10 5 10-5" />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+    <style>
+      .ai-scanner-wrapper { position: relative; display: flex; align-items: center; justify-content: center; }
+      .ai-scanner-container { position: relative; display: flex; align-items: center; justify-content: center; width: 320px; height: 320px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.05); background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.03), transparent 70%); box-shadow: 0 0 40px rgba(255, 255, 255, 0.03), inset 0 0 40px rgba(255, 255, 255, 0.02); opacity: 0; transform: scale(0.8); animation: ai-scale-in 0.6s ease-out forwards; }
+      @keyframes ai-scale-in { to { opacity: 1; transform: scale(1); } }
+      .ai-scanner-glow { position: absolute; inset: 0; border-radius: 50%; animation: ai-pulse-glow 2s ease-in-out infinite; }
+      @keyframes ai-pulse-glow { 0%, 100% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.02), inset 0 0 20px rgba(255, 255, 255, 0.02); } 50% { box-shadow: 0 0 40px rgba(255, 255, 255, 0.08), inset 0 0 40px rgba(255, 255, 255, 0.04); } }
+      .ai-scanner-ripple { position: absolute; top: 50%; left: 50%; width: 100%; height: 100%; transform: translate(-50%, -50%) scale(1); border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.1); opacity: 0.4; animation: ai-ripple 3s linear infinite; }
+      @keyframes ai-ripple { to { opacity: 0; transform: translate(-50%, -50%) scale(1.4); } }
+      .ai-scanner-core { position: relative; z-index: 10; display: flex; align-items: center; justify-content: center; width: 120px; height: 120px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.03); box-shadow: 0 0 20px rgba(255, 255, 255, 0.05); }
+      .ai-scanner-icon { opacity: 0; transform: scale(0.5); animation: ai-icon-in 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) 0.4s forwards; }
+      @keyframes ai-icon-in { to { opacity: 1; transform: scale(1); } }
+    </style>
     <p style="font-size:18px;font-weight:600;color:var(--white);margin-bottom:8px;">Analyzing dataset...</p>
     <p style="font-size:13px;color:var(--muted);">Running bias detection models</p>
   </div>
@@ -118,4 +188,66 @@
 
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/upload.js') }}?v=4"></script>
+<script>
+document.querySelector('input[type=file][accept=".csv"]')
+  .addEventListener('change', function(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(evt) {
+    const firstLine = evt.target.result.split('\n')[0];
+    const cols = firstLine.split(',').map(c => c.trim().replace(/"/g, ''));
+    populateColSelect(cols);
+  };
+  reader.readAsText(file);
+});
+
+function populateColSelect(cols) {
+  const select = document.getElementById('sensitive-col');
+  const chips = document.getElementById('col-chips');
+  
+  // Clear and enable
+  select.innerHTML = '<option value="">— Select a column —</option>';
+  select.disabled = false;
+  if(chips) chips.innerHTML = '';
+
+  // Add options + chips
+  cols.forEach(col => {
+    const opt = document.createElement('option');
+    opt.value = col;
+    opt.textContent = col;
+    select.appendChild(opt);
+
+    if (chips) {
+        // Also show as clickable chip
+        const chip = document.createElement('span');
+        chip.className = 'col-chip';
+        chip.textContent = col;
+        chip.onclick = function() {
+        select.value = col;
+        select.dispatchEvent(new Event('change'));
+        document.querySelectorAll('.col-chip')
+            .forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        };
+        chips.appendChild(chip);
+    }
+  });
+
+  // Auto-select common sensitive columns if found
+  const common = ['gender', 'race', 'age', 'ethnicity', 
+                  'sex', 'income_bracket', 'religion'];
+  for (const c of common) {
+    if (cols.map(x=>x.toLowerCase()).includes(c)) {
+      select.value = cols.find(x=>x.toLowerCase()===c);
+      if (chips) {
+          const chipToActive = chips.querySelector(`.col-chip:nth-child(${cols.findIndex(x=>x.toLowerCase()===c)+1})`);
+          if (chipToActive) chipToActive.classList.add('active');
+      }
+      select.dispatchEvent(new Event('change'));
+      break;
+    }
+  }
+}
+</script>
 {% endblock %}
