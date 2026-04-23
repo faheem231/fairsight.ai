@@ -68,7 +68,10 @@ def generate_hiring_demo():
     })
 
     # Save to demo directory
-    demo_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'demo')
+    if os.environ.get('VERCEL'):
+        demo_dir = '/tmp/demo'
+    else:
+        demo_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'demo')
     os.makedirs(demo_dir, exist_ok=True)
     filepath = os.path.join(demo_dir, 'hiring_bias_demo.csv')
     df.to_csv(filepath, index=False)

@@ -12,7 +12,8 @@ def create_app():
 
     # Ensure upload directory exists
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-    os.makedirs(os.path.join(app.root_path, 'demo'), exist_ok=True)
+    if not os.environ.get('VERCEL'):
+        os.makedirs(os.path.join(app.root_path, 'demo'), exist_ok=True)
 
     # Register blueprints
     from routes.auth import auth_bp

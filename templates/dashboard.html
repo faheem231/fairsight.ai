@@ -888,8 +888,7 @@
   document.addEventListener('DOMContentLoaded', function () {
     const canvas = document.getElementById('hero-fairness-gauge');
     if (!canvas) return;
-    const score = {{ analysis.fairness_score }
-  };
+    const score = {{ analysis.fairness_score }};
   new Chart(canvas, {
     type: 'doughnut',
     data: { datasets: [{ data: [score, 100 - score], backgroundColor: ['#ffffff', 'rgba(255,255,255,0.05)'], borderWidth: 0 }] },
