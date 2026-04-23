@@ -37,16 +37,16 @@
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
       <span class="shiny-text">⚡ AI-powered bias detection for modern teams</span>
     </div>
-    <h1 class="eb-hero__headline fade-up">
+    <h1 class="eb-hero__headline hero-title fade-up">
       Detect bias before<br>it causes harm
     </h1>
     <p class="eb-hero__sub fade-up">
       Upload any CSV dataset, select sensitive attributes, and get an instant fairness audit powered by AI. No code required.
     </p>
     {% if analysis %}
-    <a href="{{ url_for('report.report_page') }}" class="btn-primary fade-up">View Analysis Report</a>
+    <a href="{{ url_for('report.report_page') }}" class="btn-primary magnetic fade-up">View Analysis Report</a>
     {% else %}
-    <a href="{{ url_for('upload.upload_page') }}" class="btn-primary fade-up">Start Free Audit</a>
+    <a href="{{ url_for('upload.upload_page') }}" class="btn-primary magnetic fade-up">Start Free Audit</a>
     {% endif %}
   </div>
 
@@ -60,23 +60,23 @@
     <div class="eb-panel__dots"></div>
     <!-- Stats content — slides up on hover -->
     <div class="eb-panel__content">
-      <div class="eb-stat">
-        <div class="eb-stat__value">97.4%</div>
-        <div class="eb-stat__label">Model Accuracy</div>
+      <div class="eb-stat stat-card">
+        <div class="eb-stat__value stat-number">97.4</div>
+        <div class="eb-stat__label">Model Accuracy (%)</div>
         <div class="eb-stat__bar"><div class="eb-stat__fill" style="--fw:97.4%"></div></div>
       </div>
-      <div class="eb-stat">
-        <div class="eb-stat__value">23</div>
+      <div class="eb-stat stat-card">
+        <div class="eb-stat__value stat-number">23</div>
         <div class="eb-stat__label">Bias Score</div>
         <div class="eb-stat__bar"><div class="eb-stat__fill" style="--fw:23%"></div></div>
       </div>
-      <div class="eb-stat">
-        <div class="eb-stat__value">1,247</div>
+      <div class="eb-stat stat-card">
+        <div class="eb-stat__value stat-number">1247</div>
         <div class="eb-stat__label">Datasets Audited</div>
         <div class="eb-stat__bar"><div class="eb-stat__fill" style="--fw:82%"></div></div>
       </div>
-      <div class="eb-stat">
-        <div class="eb-stat__value">91</div>
+      <div class="eb-stat stat-card">
+        <div class="eb-stat__value stat-number">91</div>
         <div class="eb-stat__label">Fairness Index</div>
         <div class="eb-stat__bar"><div class="eb-stat__fill" style="--fw:91%"></div></div>
       </div>
@@ -151,11 +151,6 @@
         <div class="card-desc">Ask Gemini questions about your bias report in natural language and get clear explanations.</div>
       </div>
       <div class="card fade-up">
-        <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-        <div class="card-title">What-If Simulator</div>
-        <div class="card-desc">Simulate changes to selection rates and instantly see the impact on your fairness score.</div>
-      </div>
-      <div class="card fade-up">
         <div class="card-icon"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
         <div class="card-title">Score Timeline</div>
         <div class="card-desc">Track fairness score history over time and monitor improvements across multiple audits.</div>
@@ -172,17 +167,378 @@
       <h2 class="section-headline gradient-text fade-up">Connects with your stack</h2>
       <p class="fade-up">Seamlessly integrates with popular data science tools and platforms.</p>
     </div>
-    <div class="orbital-wrap fade-up">
-      <div class="orbital-ring" style="width:320px;height:320px;"></div>
-      <div class="orbital-ring" style="width:200px;height:200px;"></div>
-      <div class="orbital-center">FS</div>
-      <div class="orbital-node" style="top:0;left:50%;transform:translateX(-50%);">📊</div>
-      <div class="orbital-node" style="top:50%;right:0;transform:translateY(-50%);">🐍</div>
-      <div class="orbital-node" style="bottom:0;left:50%;transform:translateX(-50%);">🤖</div>
-      <div class="orbital-node" style="top:50%;left:0;transform:translateY(-50%);">📁</div>
-      <div class="orbital-node" style="top:12%;right:12%;">☁️</div>
-      <div class="orbital-node" style="bottom:12%;left:12%;">⚙️</div>
+    <div class="solar-system-wrapper fade-up">
+      <div class="solar-system" id="solar-system">
+
+        <!-- SUN — FairSight core -->
+        <div class="sun" id="sun">
+          <div class="sun-core">FS</div>
+          <div class="sun-glow"></div>
+          <div class="sun-pulse"></div>
+          <div class="sun-pulse sun-pulse-2"></div>
+        </div>
+
+        <!-- ORBIT 1 — closest, fast -->
+        <div class="orbit orbit-1">
+          <div class="planet planet-1" data-label="Dataset">
+            <span>📊</span>
+            <div class="planet-label">Dataset</div>
+          </div>
+        </div>
+
+        <!-- ORBIT 2 -->
+        <div class="orbit orbit-2">
+          <div class="planet planet-2" data-label="AI Model">
+            <span>🧠</span>
+            <div class="planet-label">ML Model</div>
+          </div>
+        </div>
+
+        <!-- ORBIT 3 -->
+        <div class="orbit orbit-3">
+          <div class="planet planet-3" data-label="Reports">
+            <span>📋</span>
+            <div class="planet-label">Reports</div>
+          </div>
+        </div>
+
+        <!-- ORBIT 4 -->
+        <div class="orbit orbit-4">
+          <div class="planet planet-4" data-label="Claude AI">
+            <span>✨</span>
+            <div class="planet-label">Claude AI</div>
+          </div>
+        </div>
+
+        <!-- ORBIT 5 — farthest, slowest -->
+        <div class="orbit orbit-5">
+          <div class="planet planet-5" data-label="Fairness">
+            <span>⚖️</span>
+            <div class="planet-label">Fairness</div>
+          </div>
+        </div>
+
+        <!-- ORBIT 6 -->
+        <div class="orbit orbit-6">
+          <div class="planet planet-6" data-label="Alerts">
+            <span>🔔</span>
+            <div class="planet-label">Alerts</div>
+          </div>
+        </div>
+
+      </div>
+
+      <p class="solar-caption">
+        FairSight — the center of your AI fairness ecosystem
+      </p>
     </div>
+
+<style>
+/* ── Wrapper ── */
+.solar-system-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  position: relative;
+}
+
+/* ── Stage ── */
+.solar-system {
+  position: relative;
+  width: 520px;
+  height: 520px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── SUN ── */
+.sun {
+  position: absolute;
+  width: 88px;
+  height: 88px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sun-core {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 35% 35%,
+    #a78bfa,
+    #7c3aed 50%,
+    #4c1d95
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Sora', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -1px;
+  box-shadow:
+    0 0 0 4px rgba(124,58,237,0.3),
+    0 0 30px rgba(124,58,237,0.8),
+    0 0 60px rgba(124,58,237,0.4),
+    0 0 100px rgba(124,58,237,0.2);
+  z-index: 2;
+  position: relative;
+  animation: sunRotate 20s linear infinite;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.sun-core:hover {
+  transform: scale(1.12);
+  box-shadow:
+    0 0 0 6px rgba(124,58,237,0.4),
+    0 0 50px rgba(124,58,237,1),
+    0 0 100px rgba(124,58,237,0.6);
+}
+
+@keyframes sunRotate {
+  from { box-shadow:
+    0 0 0 4px rgba(124,58,237,0.3),
+    0 0 30px rgba(124,58,237,0.8),
+    0 0 60px rgba(124,58,237,0.4); }
+  50%  { box-shadow:
+    0 0 0 4px rgba(6,182,212,0.3),
+    0 0 30px rgba(6,182,212,0.8),
+    0 0 60px rgba(6,182,212,0.4); }
+  to   { box-shadow:
+    0 0 0 4px rgba(124,58,237,0.3),
+    0 0 30px rgba(124,58,237,0.8),
+    0 0 60px rgba(124,58,237,0.4); }
+}
+
+/* Pulse rings from sun */
+.sun-pulse {
+  position: absolute;
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(124,58,237,0.5);
+  animation: sunPulse 2.5s ease-out infinite;
+  pointer-events: none;
+}
+.sun-pulse-2 {
+  animation-delay: 1.25s;
+}
+@keyframes sunPulse {
+  0%   { transform: scale(1);   opacity: 0.7; }
+  100% { transform: scale(3.5); opacity: 0; }
+}
+
+/* ── ORBITS ── */
+.orbit {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.06);
+  transform: translate(-50%, -50%);
+  animation: orbitSpin linear infinite;
+  transform-origin: center center;
+}
+
+/* Orbit sizes + speeds */
+.orbit-1 { width: 150px; height: 150px; 
+            animation-duration: 6s; }
+.orbit-2 { width: 210px; height: 210px; 
+            animation-duration: 9s; }
+.orbit-3 { width: 280px; height: 280px; 
+            animation-duration: 13s; }
+.orbit-4 { width: 350px; height: 350px; 
+            animation-duration: 17s; }
+.orbit-5 { width: 420px; height: 420px; 
+            animation-duration: 22s; }
+.orbit-6 { width: 500px; height: 500px; 
+            animation-duration: 28s; 
+            animation-direction: reverse; }
+
+/* Glowing orbit rings on hover */
+.orbit:hover {
+  border-color: rgba(124,58,237,0.25);
+  box-shadow: 0 0 12px rgba(124,58,237,0.15);
+}
+
+@keyframes orbitSpin {
+  from { transform: translate(-50%,-50%) rotate(0deg); }
+  to   { transform: translate(-50%,-50%) rotate(360deg); }
+}
+
+/* ── PLANETS ── */
+.planet {
+  position: absolute;
+  top: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.05);
+  border: 1.5px solid rgba(255,255,255,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1),
+              box-shadow 0.3s ease,
+              border-color 0.3s ease;
+  backdrop-filter: blur(8px);
+  /* Counter-rotate so emoji stays upright */
+  animation: counterSpin linear infinite;
+}
+
+.orbit-1 .planet { animation-duration: 6s; }
+.orbit-2 .planet { animation-duration: 9s; }
+.orbit-3 .planet { animation-duration: 13s; }
+.orbit-4 .planet { animation-duration: 17s; }
+.orbit-5 .planet { animation-duration: 22s; }
+.orbit-6 .planet { animation-duration: 28s; 
+                   animation-direction: reverse; }
+
+@keyframes counterSpin {
+  from { transform: translateX(-50%) rotate(0deg); }
+  to   { transform: translateX(-50%) rotate(-360deg); }
+}
+
+/* Planet hover */
+.planet:hover {
+  transform: translateX(-50%) scale(1.4) !important;
+  border-color: #7c3aed;
+  box-shadow:
+    0 0 0 3px rgba(124,58,237,0.3),
+    0 0 20px rgba(124,58,237,0.6);
+  z-index: 999;
+}
+
+/* Planet glow colors per orbit */
+.planet-1 { 
+  border-color: rgba(124,58,237,0.4);
+  box-shadow: 0 0 12px rgba(124,58,237,0.4); 
+}
+.planet-2 { 
+  border-color: rgba(6,182,212,0.4);
+  box-shadow: 0 0 12px rgba(6,182,212,0.4); 
+}
+.planet-3 { 
+  border-color: rgba(16,185,129,0.4);
+  box-shadow: 0 0 12px rgba(16,185,129,0.4); 
+}
+.planet-4 { 
+  border-color: rgba(245,158,11,0.4);
+  box-shadow: 0 0 12px rgba(245,158,11,0.4); 
+}
+.planet-5 { 
+  border-color: rgba(239,68,68,0.4);
+  box-shadow: 0 0 12px rgba(239,68,68,0.4); 
+}
+.planet-6 { 
+  border-color: rgba(219,39,119,0.4);
+  box-shadow: 0 0 12px rgba(219,39,119,0.4); 
+}
+
+/* ── PLANET LABELS ── */
+.planet-label {
+  position: absolute;
+  bottom: -26px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 0.68rem;
+  color: #64748b;
+  font-family: 'JetBrains Mono', monospace;
+  opacity: 0;
+  transition: opacity 0.2s ease, color 0.2s ease;
+  pointer-events: none;
+}
+.planet:hover .planet-label {
+  opacity: 1;
+  color: #a78bfa;
+}
+
+/* ── CAPTION ── */
+.solar-caption {
+  margin-top: 32px;
+  color: #475569;
+  font-size: 0.85rem;
+  font-family: 'Sora', sans-serif;
+  text-align: center;
+  letter-spacing: 0.3px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .solar-system { 
+    width: 320px; 
+    height: 320px; 
+    transform: scale(0.65); 
+  }
+}
+</style>
+
+<script>
+// Pause all orbits on hover
+document.querySelectorAll('.orbit').forEach(orbit => {
+  orbit.addEventListener('mouseenter', () => {
+    document.querySelectorAll('.orbit, .planet')
+            .forEach(el => el.style.animationPlayState = 'paused');
+  });
+  orbit.addEventListener('mouseleave', () => {
+    document.querySelectorAll('.orbit, .planet')
+            .forEach(el => el.style.animationPlayState = 'running');
+  });
+});
+
+// Planet click — navigate to relevant page
+const planetLinks = {
+  'planet-1': '/upload',
+  'planet-2': '/model-upload',
+  'planet-3': '/report',
+  'planet-4': '/fix-suggestions',
+  'planet-5': '/report',
+  'planet-6': '/chat'
+};
+document.querySelectorAll('.planet').forEach(planet => {
+  const key = [...planet.classList]
+               .find(c => c.startsWith('planet-') && c !== 'planet');
+  if (key && planetLinks[key]) {
+    planet.style.cursor = 'pointer';
+    planet.addEventListener('click', () => {
+      window.location.href = planetLinks[key];
+    });
+  }
+});
+
+// Sun click — go to dashboard
+document.querySelector('.sun-core')
+        ?.addEventListener('click', () => {
+  window.location.href = '/';
+});
+
+// Tilt entire solar system on mouse move
+const system = document.getElementById('solar-system');
+document.addEventListener('mousemove', (e) => {
+  if (!system) return;
+  const rect = system.getBoundingClientRect();
+  const cx = rect.left + rect.width / 2;
+  const cy = rect.top + rect.height / 2;
+  const dx = (e.clientX - cx) / window.innerWidth;
+  const dy = (e.clientY - cy) / window.innerHeight;
+  system.style.transform = 
+    `perspective(800px) 
+     rotateX(${dy * -8}deg) 
+     rotateY(${dx * 8}deg)`;
+});
+</script>
   </div>
 </section>
 
@@ -214,7 +570,6 @@
         <ul class="pricing-features">
           <li>Unlimited audits</li>
           <li>AI fix suggestions</li>
-          <li>What-If simulator</li>
           <li>PDF export</li>
           <li>Priority support</li>
         </ul>
@@ -256,7 +611,7 @@
       </div>
       <div class="card fade-up">
         <div class="testimonial-quote">"</div>
-        <div class="testimonial-text">The What-If simulator alone justified the investment. We could test remediation strategies before deploying them.</div>
+        <div class="testimonial-text">The advanced analytics alone justified the investment. We could find complex disparities before deploying our models.</div>
         <div class="testimonial-author">
           <div class="testimonial-avatar">JR</div>
           <div><div class="testimonial-name">James Rivera</div><div class="testimonial-role">Data Lead, FinServ Inc</div></div>

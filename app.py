@@ -21,7 +21,6 @@ def create_app():
     from routes.suggestions import suggestions_bp
     from routes.chat import chat_bp
     from routes.timeline import timeline_bp
-    from routes.simulator import simulator_bp
     from routes.model import model_bp
     from routes.export import export_bp
 
@@ -32,7 +31,6 @@ def create_app():
     app.register_blueprint(suggestions_bp)
     app.register_blueprint(chat_bp)
     app.register_blueprint(timeline_bp)
-    app.register_blueprint(simulator_bp)
     app.register_blueprint(model_bp)
     app.register_blueprint(export_bp)
 

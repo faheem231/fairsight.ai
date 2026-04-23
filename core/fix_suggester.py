@@ -14,9 +14,10 @@ def get_ai_suggestions(bias_report: dict) -> list:
         return get_fallback_suggestions(bias_report)
 
     try:
-        import google.generativeai as genai
+        from google import genai
+        from google.genai import types
 
-        genai.configure(api_key=api_key)
+        client = genai.Client(api_key=api_key)
 
         # Prepare a clean, serialisable summary for the prompt
         report_summary = {
@@ -31,22 +32,26 @@ def get_ai_suggestions(bias_report: dict) -> list:
             'positive_rate':       bias_report.get('positive_rate', 0),
         }
 
-        model = genai.GenerativeModel(
-            model_name='gemini-1.5-flash',
-            system_instruction=(
-                'You are an AI fairness and bias expert. '
-                'Analyze the bias report and return ONLY a valid JSON array '
-                'of exactly 5 fix recommendations. '
-                'Each item must have these exact keys: '
-                'title (string), description (2-3 sentence string), '
-                'severity (exactly one of: CRITICAL, RECOMMENDED, OPTIONAL), '
-                'icon (single emoji). '
-                'Return ONLY the JSON array. No markdown, no explanation, no code fences.'
-            )
+        system_instruction = (
+            'You are an AI fairness and bias expert. '
+            'Analyze the bias report and return ONLY a valid JSON array '
+            'of exactly 5 fix recommendations. '
+            'Each item must have these exact keys: '
+            'title (string), description (2-3 sentence string), '
+            'severity (exactly one of: CRITICAL, RECOMMENDED, OPTIONAL), '
+            'icon (single emoji). '
+            'Return ONLY the JSON array. No markdown, no explanation, no code fences.'
         )
 
-        response = model.generate_content(json.dumps(report_summary))
-
+        response = client.models.generate_content(
+            model='gemini-2.5-flash',
+            contents=json.dumps(report_summary),
+            config=types.GenerateContentConfig(
+                system_instruction=system_instruction,
+                temperature=0.4
+            )
+        )
+        
         response_text = response.text.strip()
 
         # Strip markdown code fences if the model adds them anyway

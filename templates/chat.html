@@ -2,10 +2,47 @@
 {% block content %}
 <section class="section-padding" style="padding-top:60px;">
   <div class="container" style="max-width:900px;">
+    <style>
+      .btn-reset {
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.1);
+        color: #94a3b8;
+        padding: 6px 16px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 0.8rem;
+        font-family: 'Inter', sans-serif;
+        transition: all 0.2s;
+      }
+      .btn-reset:hover {
+        background: rgba(124,58,237,0.2);
+        border-color: #7c3aed;
+        color: #fff;
+      }
+      .suggestion-pill {
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.15);
+        color: var(--white);
+        padding: 8px 14px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 13px;
+        transition: all 0.2s;
+        margin-top: 8px;
+        font-family: 'Inter', sans-serif;
+      }
+      .suggestion-pill:hover {
+        background: rgba(255,255,255,0.1);
+        border-color: rgba(255,255,255,0.3);
+      }
+    </style>
     <div class="section-intro">
-      <div class="pill fade-up">AI ANALYST</div>
+      <div style="display:flex; justify-content:center; align-items:center; gap: 16px; margin-bottom: 8px;">
+        <div class="pill fade-up" style="margin: 0;">AI ANALYST</div>
+        <button class="btn-reset fade-up" onclick="resetChat()">🔄 Start Over</button>
+      </div>
       <h2 class="section-headline gradient-text fade-up">FairSight AI</h2>
-      <p class="fade-up">Your expert fairness analyst — every answer is data-driven</p>
+      <p class="fade-up">Your expert fairness assistant — guiding you step-by-step</p>
       {% if analysis %}
       <div style="display:flex;gap:10px;justify-content:center;margin-top:16px;flex-wrap:wrap;" class="fade-up">
         <span class="pill" style="{% if analysis.fairness_score < 50 %}border-color:rgba(239,68,68,0.3);color:#fca5a5;{% elif analysis.fairness_score < 75 %}border-color:rgba(245,158,11,0.3);color:#fcd34d;{% else %}border-color:rgba(16,185,129,0.3);color:#86efac;{% endif %}">Score: {{ analysis.fairness_score }}/100</span>
@@ -18,21 +55,17 @@
 
     <div class="chat-wrap fade-up">
       <div class="chat-messages" id="chat-window">
-        <div class="msg msg-ai">
-          <div class="msg-avatar">AI</div>
+        <div class="msg msg-ai" id="welcome-message">
+          <div class="msg-avatar">🤖</div>
           <div class="msg-bubble">
-            {% if analysis %}
-            <p style="margin:0 0 8px;"><strong style="color:var(--white);">FairSight AI</strong> — Fairness Analyst</p>
-            <p style="margin:0 0 8px;">I've analyzed your audit report. Here's what I see:</p>
-            <p style="margin:0 0 4px;">📊 Score: <strong style="color:var(--white);">{{ analysis.fairness_score }}/100</strong> | DI: <strong style="color:var(--white);">{{ "%.2f"|format(analysis.disparate_impact) }}</strong></p>
-            {% for group, rate in analysis.demographic_parity.items() %}
-            <p style="margin:0 0 2px;padding-left:8px;">• <strong style="color:var(--white);">{{ group }}</strong>: {{ (rate * 100)|round(1) }}%</p>
-            {% endfor %}
-            <p style="margin:8px 0 0;">Ask me anything — I don't do generic answers.</p>
-            {% else %}
-            <p style="margin:0 0 6px;"><strong style="color:var(--white);">FairSight AI</strong> — Fairness Analyst</p>
-            <p style="margin:0;">No analysis data loaded. Run a bias audit first, then come back for expert insights.</p>
-            {% endif %}
+            <p style="margin:0 0 8px;">👋 Hi! I'm <strong style="color:var(--white);">FairSight AI</strong> — your bias detection assistant.</p>
+            <p style="margin:0 0 8px;">I'll guide you through finding bias in your data step by step. Let's start:</p>
+            <p style="margin:0 0 4px;"><strong style="color:var(--white);">Do you have a CSV dataset or a trained ML model (.pkl)?</strong></p>
+            <div class="quick-replies" id="quick-replies-1" style="display:flex;flex-wrap:wrap;gap:8px;">
+              <button class="suggestion-pill" onclick="sendSuggestion(this)">📊 I have a CSV dataset</button>
+              <button class="suggestion-pill" onclick="sendSuggestion(this)">🧠 I have a trained ML model</button>
+              <button class="suggestion-pill" onclick="sendSuggestion(this)">🤔 I'm not sure, help me decide</button>
+            </div>
           </div>
         </div>
       </div>
@@ -60,6 +93,7 @@
 {% block scripts %}
 <script>
 let chatHistory = [];
+function sendSuggestion(btn) { document.getElementById('chat-input').value = btn.textContent.trim(); toggleSendBtn(); sendMessage(); }
 function sendQuickAction(q) { document.getElementById('chat-input').value = q; toggleSendBtn(); sendMessage(); }
 function autoResize(el) { el.style.height = '44px'; el.style.height = Math.min(el.scrollHeight, 120) + 'px'; }
 function toggleSendBtn() { document.getElementById('btn-send').disabled = !document.getElementById('chat-input').value.trim(); }
@@ -91,8 +125,85 @@ function appendMsg(role, text) {
     const d = document.createElement('div');
     d.className = 'msg msg-' + (role === 'user' ? 'user' : 'ai');
     const formatted = role === 'ai' ? formatAI(text) : esc(text);
-    d.innerHTML = `<div class="msg-avatar">${role === 'user' ? 'You' : 'AI'}</div><div class="msg-bubble">${formatted}</div>`;
+    d.innerHTML = `<div class="msg-avatar">${role === 'user' ? 'You' : '🤖'}</div><div class="msg-bubble">${formatted}</div>`;
     w.appendChild(d); w.scrollTop = w.scrollHeight;
+
+    // After rendering AI message, add smart follow-ups
+    if (role === 'ai') {
+        addSmartFollowUps(text, chatHistory.length);
+    }
+}
+
+function addSmartFollowUps(aiText, turn) {
+  const windowEl = document.getElementById('chat-window');
+  
+  // Remove old quick replies
+  document.querySelectorAll('.quick-replies-dynamic')
+          .forEach(el => el.remove());
+
+  const followUps = getContextualFollowUps(aiText, turn);
+  if (followUps.length === 0) return;
+
+  const div = document.createElement('div');
+  div.className = 'quick-replies quick-replies-dynamic';
+  div.style.cssText = 'display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;';
+  followUps.forEach(text => {
+    const btn = document.createElement('button');
+    btn.className = 'suggestion-pill';
+    btn.textContent = text;
+    btn.onclick = function() { 
+      sendSuggestion(this); 
+      div.remove();
+    };
+    div.appendChild(btn);
+  });
+
+  // Append after last AI message
+  const messages = windowEl.querySelectorAll('.msg-bubble');
+  const last = messages[messages.length - 1];
+  if (last) last.appendChild(div);
+  windowEl.scrollTop = windowEl.scrollHeight;
+}
+
+function getContextualFollowUps(text, turn) {
+  const t = text.toLowerCase();
+  
+  if (t.includes('csv') || t.includes('dataset'))
+    return ['📊 I have a hiring dataset', 
+            '🏦 I have a loan dataset',
+            '🏥 I have healthcare data'];
+  
+  if (t.includes('sensitive') || t.includes('attribute') || 
+      t.includes('column'))
+    return ['⚧ Gender', '🎭 Race / Ethnicity', 
+            '🎂 Age', '♿ Disability', '💰 Income'];
+  
+  if (t.includes('upload') || t.includes('go to'))
+    return ['✅ I uploaded it, now what?', 
+            '❓ Where do I find the upload page?'];
+  
+  if (t.includes('score') || t.includes('fairness'))
+    return ['📉 My score is below 50', 
+            '⚠️ My score is 50-75',
+            '✅ My score is above 75'];
+  
+  if (t.includes('fix') || t.includes('recommend'))
+    return ['Tell me more about fix #1',
+            'How long will fixes take?',
+            'What is disparate impact?'];
+
+  if (turn <= 2)
+    return ['📊 I have a CSV dataset', 
+            '🧠 I have an ML model'];
+  
+  return [];
+}
+
+function resetChat() {
+  chatHistory = [];
+  const windowEl = document.getElementById('chat-window');
+  windowEl.innerHTML = '';
+  location.reload();
 }
 
 function formatAI(text) {

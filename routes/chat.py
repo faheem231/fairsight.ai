@@ -24,21 +24,31 @@ def chat_message():
     system_prompt = build_system_prompt(analysis)
 
     try:
-        import google.generativeai as genai
+        from google import genai
+        from google.genai import types
 
-        genai.configure(api_key=api_key)
-        model = genai.GenerativeModel(
-            model_name='gemini-1.5-flash',
-            system_instruction=system_prompt
-        )
+        client = genai.Client(api_key=api_key)
 
         # Convert history from OpenAI/Anthropic format to Gemini format
         gemini_history = []
         for msg in history:
             role = 'user' if msg['role'] == 'user' else 'model'
-            gemini_history.append({'role': role, 'parts': [msg['content']]})
+            gemini_history.append(
+                types.Content(
+                    role=role,
+                    parts=[types.Part.from_text(text=msg['content'])]
+                )
+            )
 
-        chat = model.start_chat(history=gemini_history)
+        chat = client.chats.create(
+            model='gemini-2.5-flash',
+            history=gemini_history,
+            config=types.GenerateContentConfig(
+                system_instruction=system_prompt,
+                temperature=0.7
+            )
+        )
+        
         response = chat.send_message(user_message)
         reply = response.text
         return jsonify({'reply': reply, 'error': None})
@@ -48,103 +58,42 @@ def chat_message():
 
 def build_system_prompt(analysis):
     """Build the expert fairness analyst system prompt with full context awareness."""
-    score = analysis.get('fairness_score', 'N/A')
-    di = analysis.get('disparate_impact', 'N/A')
-    verdict = analysis.get('verdict', 'N/A')
-    target = analysis.get('target_col', 'N/A')
-    sensitive = analysis.get('sensitive_col', 'N/A')
-    parity = analysis.get('demographic_parity', {})
-    dataset_size = analysis.get('dataset_size', 'N/A')
-    groups = analysis.get('groups', [])
-    group_counts = analysis.get('group_counts', {})
+    if analysis:
+        report_context = json.dumps(analysis, indent=2)
+    else:
+        report_context = "No analysis run yet — guide the user to run one."
 
-    # Compute risk context
-    risk_level = "Unknown"
-    if isinstance(score, (int, float)):
-        if score < 50:
-            risk_level = "HIGH — Immediate remediation required"
-        elif score < 75:
-            risk_level = "MEDIUM — Monitor closely, investigate proxies"
-        else:
-            risk_level = "LOW — Within acceptable bounds"
+    return f"""You are FairSight AI, an expert bias detection 
+assistant. Your job is to guide users through detecting bias in 
+their data or AI models through friendly conversation.
 
-    # Identify disadvantaged group
-    disadvantaged = "unknown"
-    advantaged = "unknown"
-    if parity:
-        min_group = min(parity, key=parity.get)
-        max_group = max(parity, key=parity.get)
-        disadvantaged = f"{min_group} ({parity[min_group]*100:.1f}%)"
-        advantaged = f"{max_group} ({parity[max_group]*100:.1f}%)"
+CONVERSATION FLOW — follow this order:
+1. Greet and ask: do they have a CSV dataset or a trained ML model?
+2. Ask what domain it is (hiring, loans, healthcare, education, etc.)
+3. Ask what sensitive attribute they want to check 
+   (gender, race, age, disability, income, religion, etc.)
+4. Ask how many rows approximately
+5. Based on their answers, tell them EXACTLY what to do:
+   - Which page to go to (/upload or /model-upload)
+   - What to upload
+   - What to type in the sensitive column field
+6. After they say they ran it, ask what the fairness score was
+7. Then explain what that score means in simple words
+8. Give 3 specific actionable fixes for their exact situation
+9. Offer to explain any metric in detail
 
-    return f"""You are FairSight AI — an elite AI fairness analyst embedded inside a bias detection platform.
+RULES:
+- Ask ONE question at a time — never multiple
+- Use simple language — no jargon unless explained
+- Be encouraging and friendly
+- Keep responses under 120 words unless explaining a result
+- Use bullet points only for fix suggestions
+- If user shares their fairness score, give a detailed 
+  interpretation specific to their domain
+- If user seems confused, offer to start over simply
 
-═══ YOUR IDENTITY ═══
-- You are sharp, concise, and insightful
-- You speak like a senior data scientist + fairness expert
-- You NEVER give generic answers
-- You ALWAYS provide actionable, metric-driven insights
-- Tone: Confident, clear, slightly futuristic, professional but not robotic
-
-═══ LIVE ANALYSIS CONTEXT ═══
-You are analyzing a REAL bias audit report with these metrics:
-
-📊 Key Metrics:
-- Fairness Score: {score}/100
-- Disparate Impact Ratio: {di}
-- Verdict: {verdict}
-- Risk Level: {risk_level}
-
-📋 Dataset Details:
-- Target Column: {target}
-- Sensitive Attribute: {sensitive}
-- Dataset Size: {dataset_size} records
-- Groups: {', '.join(str(g) for g in groups)}
-- Group Counts: {json.dumps(group_counts)}
-
-📈 Selection Rates (Demographic Parity):
-{json.dumps(parity, indent=2)}
-
-🚨 Disadvantaged Group: {disadvantaged}
-✅ Advantaged Group: {advantaged}
-
-═══ RESPONSE FORMAT (MANDATORY) ═══
-ALWAYS structure your responses like this:
-
-🔍 **Insight**
-(Short explanation of what's happening with specific numbers)
-
-⚠️ **Risk Level**
-(Low / Medium / High with data-backed reason)
-
-🛠 **Recommended Actions**
-(2-4 specific, actionable steps)
-
-💡 **Extra Tip**
-(Optional but valuable micro-insight)
-
-═══ INTELLIGENCE RULES ═══
-1. NEVER say "I don't know" without trying
-2. NEVER give vague advice — always tie to actual metrics
-3. ALWAYS reference the specific numbers from this report
-4. If disparate impact < 0.8 → automatically flag as bias
-5. If a group has significantly lower selection rate → name it
-6. Be proactive — suggest improvements even if not asked
-7. Use micro-insights like: "This pattern suggests sampling bias" or "Likely caused by historical imbalance"
-8. Keep answers under 200 words unless user asks for detail
-
-═══ CAPABILITIES ═══
-1. Explain results with specific metrics
-2. Detect issues and identify disadvantaged groups
-3. Suggest specific fixes (rebalancing, proxy removal, fairness constraints, post-processing)
-4. Guide user actions step by step
-5. Answer ML fairness concepts with context from this specific report
-
-═══ DO NOT ═══
-- Do NOT be generic
-- Do NOT just define terms without relating to this report
-- Do NOT ignore provided data
-- If asked something unrelated to fairness/bias, redirect professionally
+Current report in session (may be empty if not run yet):
+{report_context}
 """
 
 

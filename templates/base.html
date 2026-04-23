@@ -11,10 +11,21 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=21">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=24">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 </head>
 <body>
+    <!-- Page Loader -->
+    <div id="page-loader">
+        <div class="loader-content">
+            <div class="loader-logo">FairSight</div>
+            <div class="loader-dots">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </div>
+
     <!-- Navbar -->
     <nav class="navbar">
         <div class="container navbar-inner">
@@ -29,16 +40,8 @@
                 <a href="{{ url_for('report.report_page') }}" class="{% if request.endpoint == 'report.report_page' %}active{% endif %}">Reports</a>
                 <a href="{{ url_for('suggestions.suggestions_page') }}" class="{% if request.endpoint == 'suggestions.suggestions_page' %}active{% endif %}">Fix Bias</a>
                 <a href="{{ url_for('chat.chat_page') }}" class="{% if request.endpoint == 'chat.chat_page' %}active{% endif %}">AI Chat</a>
-                <a href="{{ url_for('simulator.simulator_page') }}" class="{% if request.endpoint == 'simulator.simulator_page' %}active{% endif %}">Simulator</a>
             </div>
-            {% if session.get('authenticated') %}
-            <div style="display:flex;align-items:center;gap:16px;">
-                <span style="font-size:13px;color:var(--body-text);">{{ session.get('user_name', 'User') }}</span>
-                <a href="{{ url_for('auth.logout') }}" class="nav-cta" style="font-size:12px;">Logout</a>
-            </div>
-            {% else %}
             <a href="{{ url_for('auth.login') }}" class="nav-cta">Login</a>
-            {% endif %}
             <button class="nav-mobile-btn" id="nav-toggle" aria-label="Toggle menu">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
             </button>
@@ -98,28 +101,16 @@
         </div>
     </footer>
 
-    <!-- Scroll fade-up observer -->
+    <!-- Scripts -->
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Mobile nav toggle
         const toggle = document.getElementById('nav-toggle');
         const links = document.getElementById('nav-links');
         if (toggle) toggle.addEventListener('click', () => links.classList.toggle('open'));
-
-        // IntersectionObserver for fade-up
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry, i) => {
-                if (entry.isIntersecting) {
-                    const idx = Array.from(entry.target.parentElement?.children || []).indexOf(entry.target);
-                    const delay = Math.max(0, idx) * 80;
-                    setTimeout(() => entry.target.classList.add('visible'), delay);
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
     });
     </script>
+    <script src="{{ url_for('static', filename='js/animations.js') }}?v=2"></script>
     {% block scripts %}{% endblock %}
 </body>
 </html>

@@ -106,7 +106,7 @@
       }
     </style>
 
-    <button type="submit" class="btn-primary" id="submit-btn" style="width: 100%; justify-content: center; height: 50px;">
+    <button type="submit" class="btn-primary magnetic" id="submit-btn" style="width: 100%; justify-content: center; height: 50px;">
       🔍 Run Model Bias Audit
     </button>
 
@@ -132,71 +132,131 @@
 
 {% block scripts %}
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const csvInput = document.getElementById('csv-file');
-    const filenameEl = document.getElementById('csv-filename');
+function readCSVColumns(file) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const text = e.target.result;
+      const firstLine = text.split('\n')[0];
+      // Handle both comma and semicolon delimiters
+      const delimiter = firstLine.includes(';') ? ';' : ',';
+      const cols = firstLine
+        .split(delimiter)
+        .map(c => c.trim().replace(/^"|"$/g, '').trim())
+        .filter(c => c.length > 0);
+      resolve(cols);
+    };
+    reader.readAsText(file);
+  });
+}
 
-    csvInput.addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (!file) return;
+function populateColSelect(cols) {
+  const select = document.getElementById('sensitive-col-select') || document.getElementById('sensitive-col');
+  const chips = document.getElementById('col-chips');
+  if (!select) return;
 
-        // Update filename display
-        if (filenameEl) filenameEl.textContent = file.name;
+  select.innerHTML = '<option value="">— Select a column —</option>';
+  select.disabled = false;
+  if(chips) chips.innerHTML = '';
 
-        const reader = new FileReader();
-        reader.onload = function(evt) {
-            const firstLine = evt.target.result.split('\n')[0];
-            const cols = firstLine.split(',').map(c => c.trim().replace(/"/g, ''));
-            populateColSelect(cols);
-        };
-        reader.readAsText(file);
-    });
+  cols.forEach((col, idx) => {
+    // Add to dropdown
+    const opt = document.createElement('option');
+    opt.value = col;
+    opt.textContent = col;
+    select.appendChild(opt);
 
-    function populateColSelect(cols) {
-        const select = document.getElementById('sensitive-col-select');
-        const chips = document.getElementById('col-chips');
-        
-        // Clear and enable
-        select.innerHTML = '<option value="">— Select a column —</option>';
-        select.disabled = false;
-        if (chips) chips.innerHTML = '';
-
-        // Add options + chips
-        cols.forEach(col => {
-            const opt = document.createElement('option');
-            opt.value = col;
-            opt.textContent = col;
-            select.appendChild(opt);
-
-            if (chips) {
-                // Also show as clickable chip
-                const chip = document.createElement('span');
-                chip.className = 'col-chip';
-                chip.textContent = col;
-                chip.onclick = function() {
-                    select.value = col;
-                    document.querySelectorAll('.col-chip')
-                        .forEach(c => c.classList.remove('active'));
-                    chip.classList.add('active');
-                };
-                chips.appendChild(chip);
-            }
-        });
-
-        // Auto-select common sensitive columns if found
-        const common = ['gender', 'race', 'age', 'ethnicity', 
-                        'sex', 'income_bracket', 'religion'];
-        for (const c of common) {
-            if (cols.map(x=>x.toLowerCase()).includes(c)) {
-                select.value = cols.find(x=>x.toLowerCase()===c);
-                if (chips) {
-                    const chipToActive = chips.querySelector(`.col-chip:nth-child(${cols.findIndex(x=>x.toLowerCase()===c)+1})`);
-                    if (chipToActive) chipToActive.classList.add('active');
-                }
-                break;
-            }
-        }
+    if(chips) {
+      // Add as clickable chip
+      const chip = document.createElement('span');
+      chip.className = 'col-chip';
+      chip.textContent = col;
+      chip.dataset.col = col;
+      chip.addEventListener('click', function() {
+        select.value = col;
+        select.dispatchEvent(new Event('change'));
+        document.querySelectorAll('.col-chip')
+                .forEach(c => c.classList.remove('active'));
+        this.classList.add('active');
+      });
+      chips.appendChild(chip);
     }
+  });
+
+  // Auto-highlight common sensitive columns
+  const common = [
+    'gender', 'sex', 'race', 'ethnicity', 'religion',
+    'age', 'age_group', 'income', 'income_bracket',
+    'nationality', 'disability', 'marital_status'
+  ];
+  let autoSelected = false;
+  for (const keyword of common) {
+    const match = cols.find(c => c.toLowerCase() === keyword);
+    if (match) {
+      select.value = match;
+      if(chips) {
+        const chip = [...chips.querySelectorAll('.col-chip')]
+                      .find(c => c.dataset.col === match);
+        if (chip) chip.classList.add('active');
+      }
+      select.dispatchEvent(new Event('change'));
+      autoSelected = true;
+      break;
+    }
+  }
+
+  // If no common col found, select first column
+  if (!autoSelected && cols.length > 0) {
+    select.value = cols[0];
+    if(chips) chips.querySelector('.col-chip')?.classList.add('active');
+    select.dispatchEvent(new Event('change'));
+  }
+
+  // Show success message (if it exists)
+  const hint = document.querySelector('.col-select-hint');
+  if (hint) {
+    hint.textContent = `✅ ${cols.length} columns detected — select one to analyze`;
+    hint.style.color = '#10b981';
+  }
+}
+
+// Attach to ALL file inputs that accept CSV
+document.addEventListener('DOMContentLoaded', function() {
+  // Find CSV input (works on both upload.html and model_upload.html)
+  const csvInputs = document.querySelectorAll(
+    'input[type="file"][accept=".csv"], input[type="file"]#csv-file'
+  );
+
+  csvInputs.forEach(input => {
+    input.addEventListener('change', async function() {
+      const file = this.files[0];
+      if (!file) return;
+      if (!file.name.endsWith('.csv')) return;
+      
+      const filenameEl = document.getElementById('csv-filename');
+      if (filenameEl) filenameEl.textContent = file.name;
+
+      const cols = await readCSVColumns(file);
+      if (cols.length > 0) populateColSelect(cols);
+    });
+  });
+
+  // Also trigger if file dropped on drop zone
+  const dropZones = document.querySelectorAll('.drop-zone');
+  dropZones.forEach(zone => {
+    zone.addEventListener('drop', async function(e) {
+      e.preventDefault();
+      const file = e.dataTransfer.files[0];
+      if (!file || !file.name.endsWith('.csv')) return;
+      
+      const filenameEl = document.getElementById('csv-filename');
+      if (filenameEl) filenameEl.textContent = file.name;
+
+      const cols = await readCSVColumns(file);
+      if (cols.length > 0) populateColSelect(cols);
+    });
+    zone.addEventListener('dragover', e => e.preventDefault());
+  });
 });
 </script>
 {% endblock %}
